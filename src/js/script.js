@@ -44,7 +44,7 @@ const Gameboard = (() => {
     }
   };
 
-  const setMark = (marker, index) => {
+  const setMarker = (marker, index) => {
     board[index] = { marker };
   };
 
@@ -94,7 +94,7 @@ const Gameboard = (() => {
   return {
     getBoard,
     init,
-    setMark,
+    setMarker,
     checkRows,
     checkColumns,
     checkDiagonals,
@@ -135,7 +135,7 @@ const Controller = (() => {
 
         if (playerOne.getTurn()) {
           event.currentTarget.textContent = playerOne.getMarker();
-          Gameboard.setMark(playerOne.getMarker(), index);
+          Gameboard.setMarker(playerOne.getMarker(), index);
           console.warn(Gameboard.checkRows(playerOne.getMarker()));
           if (checkWin(playerOne.getMarker())) {
             console.log('Player one won');
@@ -143,7 +143,7 @@ const Controller = (() => {
           changeTurns();
         } else if (playerTwo.getTurn()) {
           event.currentTarget.textContent = playerTwo.getMarker();
-          Gameboard.setMark(playerTwo.getMarker(), index);
+          Gameboard.setMarker(playerTwo.getMarker(), index);
           if (checkWin(playerTwo.getMarker())) {
             console.log('Player two won');
           }
