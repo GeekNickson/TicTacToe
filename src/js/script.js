@@ -55,39 +55,43 @@ const Gameboard = (() => {
   };
 })();
 
-const Player = (name, marker) => {
+const Player = (name, marker, turn) => {
   const getName = () => name;
   const getMarker = () => marker;
+  const getTurn = () => turn;
+  const toggleTurn = () => (turn = !turn);
+
   return {
     getName,
     getMarker,
+    getTurn,
+    toggleTurn,
   };
 };
 
 const Controller = (() => {
-  const playerOne = Player('one', 'X');
-  const playerTwo = Player('two', 'O');
+  const playerOne = Player('one', 'X', true);
+  const playerTwo = Player('two', 'O', false);
 
-  let evenTurn = true;
+  const changeTurns = () => {
+      playerOne.toggleTurn();
+      playerTwo.toggleTurn();
+  }
 
-  const toggleTurn = () => {
-    evenTurn = !evenTurn;
-  };
-
-  const turn = (evenTurn) => {
-    let currentPlayer = evenTurn ? playerOne : playerTwo;
-    placeMarker(currentPlayer.getMarker());
-  };
-
-  const placeMarker = (marker) => {
+  const gameloop = () => {
     Renderer.getSquares().forEach((square) => {
       square.addEventListener('click', (event) => {
-        if (event.currentTarget.textContent === '') {
-          event.currentTarget.textContent = marker;
-          const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
-          Gameboard.setMark(marker, index);
-          toggleTurn();
-          turn(evenTurn);
+        const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
+        if (playerOne.getTurn()) {
+          event.currentTarget.textContent = playerOne.getMarker();
+          Gameboard.setMark(playerOne.getMarker(), index);
+          changeTurns();
+        } else if (playerTwo.getTurn()) {
+          event.currentTarget.textContent = playerTwo.getMarker();
+          Gameboard.setMark(playerTwo.getMarker(), index);
+          changeTurns();
+        } else {
+          return;
         }
       });
     });
@@ -96,7 +100,7 @@ const Controller = (() => {
   const init = () => {
     Gameboard.init();
     Renderer.renderBoard(Gameboard.getBoard());
-    turn(evenTurn);
+    gameloop();
   };
 
   init();
