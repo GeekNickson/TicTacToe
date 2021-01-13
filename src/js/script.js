@@ -8,6 +8,10 @@ const Renderer = (() => {
     return square;
   }
 
+  const getSquares = () => {
+    return document.querySelectorAll('.square');
+  }
+
   const setSquareMark = (mark) => {
     return `<span>${mark}</span>`
   }
@@ -19,7 +23,8 @@ const Renderer = (() => {
   }
 
   return {
-    renderBoard
+    renderBoard,
+    getSquares
   }
 })();
 
@@ -50,7 +55,12 @@ const Gameboard = (() => {
   }
 })();
 
-const Controller =(() => {
+const Player = (name, marker) => {
+  const getName = () => name;
+  const getMarker = () => marker;
+}
+
+const Controller = (() => {
   const init = () => {
     Gameboard.init();
     Renderer.renderBoard(Gameboard.getBoard());
