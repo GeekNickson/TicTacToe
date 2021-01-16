@@ -1,6 +1,6 @@
 const Renderer = (() => {
-  boardContainer = document.querySelector('.gameboard');
-  dropdown = document.querySelector('.dropdown');
+  const boardContainer = document.querySelector('.gameboard');
+  const dropdown = document.querySelector('.dropdown');
   dropdown.firstChild.textContent = 'AI';
 
   dropdown.addEventListener('mouseover', () => {
@@ -11,7 +11,7 @@ const Renderer = (() => {
     dropdown.querySelector('.dropdown-content').style.display = 'none';
   });
 
-  const changePlayerType = (dropdown) => {
+  const changePlayerType = () => {
     dropdown.querySelector('.dropdown-content').addEventListener('click', (event) => {
       dropdown.firstChild.textContent = '';
       dropdown.firstChild.textContent = event.target.textContent;
@@ -34,11 +34,14 @@ const Renderer = (() => {
   };
 
   const renderBoard = (board) => {
-    changePlayerType(dropdown);
     board.forEach((square) => {
       boardContainer.appendChild(createSquare(setSquareMark(square.marker)));
     });
   };
+
+  const clearBoard = () => {
+    getSquares().forEach(square => boardContainer.removeChild(square));
+  }
 
   const displayControls = () => {
     document.querySelector('.controls').classList.add('controls-visible');
@@ -63,6 +66,8 @@ const Renderer = (() => {
     hideControls,
     displayResult,
     clearResult,
+    changePlayerType,
+    clearBoard,
   };
 })();
 
@@ -80,6 +85,10 @@ const Gameboard = (() => {
     for (let i = 0; i < 9; i++) {
       board.push(square);
     }
+  };
+
+  const clear = () => {
+    board.forEach((square) => (square.marker = ''));
   };
 
   const setMarker = (marker, index) => {
@@ -142,6 +151,7 @@ const Gameboard = (() => {
     checkColumns,
     checkDiagonals,
     checkDraw,
+    clear,
   };
 })();
 
@@ -162,6 +172,8 @@ const Player = (name, marker, turn) => {
 const Controller = (() => {
   const playerOne = Player('one', 'X', true);
   const playerTwo = Player('two', 'O', false);
+  const restartButton = document.querySelector('.btn-restart');
+
 
   const changeTurns = () => {
     playerOne.toggleTurn();
@@ -176,6 +188,17 @@ const Controller = (() => {
     return Gameboard.checkDraw();
   };
 
+  const restart = () => {
+    Gameboard.clear();
+    Renderer.clearBoard();
+    Renderer.clearResult();
+    Renderer.hideControls();
+    Renderer.renderBoard(Gameboard.getBoard());
+    gameloop();
+  };
+
+  restartButton.addEventListener('click', restart);
+
   const onGameFinished = (result) => {
     Renderer.displayResult(result);
     Renderer.displayControls();
@@ -185,33 +208,33 @@ const Controller = (() => {
   const gameHandler = (event) => {
     const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
 
-        if (playerOne.getTurn()) {
-          event.currentTarget.textContent = playerOne.getMarker();
-          Gameboard.setMarker(playerOne.getMarker(), index);
-          console.warn(Gameboard.checkRows(playerOne.getMarker()));
-          if (checkWin(playerOne.getMarker())) {
-            onGameFinished('Player 1 Won!');
-            return;
-          } else if (checkDraw()) {
-            onGameFinished("It's a Draw!");
-            return;
-          }
-          changeTurns();
-        } else if (playerTwo.getTurn()) {
-          event.currentTarget.textContent = playerTwo.getMarker();
-          Gameboard.setMarker(playerTwo.getMarker(), index);
-          if (checkWin(playerTwo.getMarker())) {
-            onGameFinished('Player 2 Won!');
-            return;
-          } else if (checkDraw()) {
-            onGameFinished("It's a Draw!");
-            return;
-          }
-          changeTurns();
-        } else {
-          return;
-        }
-  }
+    if (playerOne.getTurn()) {
+      event.currentTarget.textContent = playerOne.getMarker();
+      Gameboard.setMarker(playerOne.getMarker(), index);
+      console.warn(Gameboard.checkRows(playerOne.getMarker()));
+      if (checkWin(playerOne.getMarker())) {
+        onGameFinished('Player 1 Won!');
+        return;
+      } else if (checkDraw()) {
+        onGameFinished("It's a Draw!");
+        return;
+      }
+      changeTurns();
+    } else if (playerTwo.getTurn()) {
+      event.currentTarget.textContent = playerTwo.getMarker();
+      Gameboard.setMarker(playerTwo.getMarker(), index);
+      if (checkWin(playerTwo.getMarker())) {
+        onGameFinished('Player 2 Won!');
+        return;
+      } else if (checkDraw()) {
+        onGameFinished("It's a Draw!");
+        return;
+      }
+      changeTurns();
+    } else {
+      return;
+    }
+  };
   const gameloop = () => {
     Renderer.getSquares().forEach((square) => {
       square.addEventListener('click', gameHandler);
@@ -219,6 +242,7 @@ const Controller = (() => {
   };
 
   const init = () => {
+    Renderer.changePlayerType();
     Gameboard.init();
     Renderer.renderBoard(Gameboard.getBoard());
     gameloop();
