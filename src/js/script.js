@@ -1,5 +1,22 @@
 const Renderer = (() => {
   boardContainer = document.querySelector('.gameboard');
+  dropdown = document.querySelector('.dropdown');
+  dropdown.firstChild.textContent = 'AI';
+
+  dropdown.addEventListener('mouseover', () => {
+    dropdown.querySelector('.dropdown-content').style.display = 'block';
+  });
+
+  dropdown.addEventListener('mouseout', () => {
+    dropdown.querySelector('.dropdown-content').style.display = 'none';
+  });
+
+  const changePlayerType = (dropdown) => {
+    dropdown.querySelector('.dropdown-content').addEventListener('click', (event) => {
+      dropdown.firstChild.textContent = '';
+      dropdown.firstChild.textContent = event.target.textContent;
+    });
+  };
 
   const createSquare = (innerContent) => {
     const square = document.createElement('div');
@@ -17,14 +34,35 @@ const Renderer = (() => {
   };
 
   const renderBoard = (board) => {
+    changePlayerType(dropdown);
     board.forEach((square) => {
       boardContainer.appendChild(createSquare(setSquareMark(square.marker)));
     });
   };
 
+  const displayControls = () => {
+    document.querySelector('.controls').classList.add('controls-visible');
+  };
+
+  const hideControls = () => {
+    document.querySelector('.controls').classList.remove('controls-visible');
+  };
+
+  const displayResult = (result) => {
+    document.querySelector('.game-result').textContent = result;
+  };
+
+  const clearResult = () => {
+    document.querySelector('.game-result').textContent = '';
+  };
+
   return {
     renderBoard,
     getSquares,
+    displayControls,
+    hideControls,
+    displayResult,
+    clearResult,
   };
 })();
 
@@ -91,6 +129,11 @@ const Gameboard = (() => {
       return false;
     }
   };
+
+  const checkDraw = () => {
+    return board.every((square) => square.marker !== '') ? true : false;
+  };
+
   return {
     getBoard,
     init,
@@ -98,6 +141,7 @@ const Gameboard = (() => {
     checkRows,
     checkColumns,
     checkDiagonals,
+    checkDraw,
   };
 })();
 
@@ -128,6 +172,10 @@ const Controller = (() => {
     return Gameboard.checkColumns(marker) || Gameboard.checkRows(marker) || Gameboard.checkDiagonals(marker);
   };
 
+  const checkDraw = () => {
+    return Gameboard.checkDraw();
+  };
+
   const gameloop = () => {
     Renderer.getSquares().forEach((square) => {
       square.addEventListener('click', (event) => {
@@ -138,20 +186,27 @@ const Controller = (() => {
           Gameboard.setMarker(playerOne.getMarker(), index);
           console.warn(Gameboard.checkRows(playerOne.getMarker()));
           if (checkWin(playerOne.getMarker())) {
-            console.log('Player one won');
+            Renderer.displayResult('Player 1 Won!');
+            Renderer.displayControls();
+          } else if (checkDraw()) {
+            Renderer.displayResult('It\'s a Draw!');
+            Renderer.displayControls();
           }
           changeTurns();
         } else if (playerTwo.getTurn()) {
           event.currentTarget.textContent = playerTwo.getMarker();
           Gameboard.setMarker(playerTwo.getMarker(), index);
           if (checkWin(playerTwo.getMarker())) {
-            console.log('Player two won');
+            Renderer.displayResult('Player 2 Won!');
+            Renderer.displayControls();
+          } else if (checkDraw()) {
+            Renderer.displayResult('It\'s a Draw!');
+            Renderer.displayControls();
           }
           changeTurns();
         } else {
           return;
         }
-
       });
     });
   };
