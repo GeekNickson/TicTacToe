@@ -176,38 +176,45 @@ const Controller = (() => {
     return Gameboard.checkDraw();
   };
 
-  const gameloop = () => {
-    Renderer.getSquares().forEach((square) => {
-      square.addEventListener('click', (event) => {
-        const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
+  const onGameFinished = (result) => {
+    Renderer.displayResult(result);
+    Renderer.displayControls();
+    Renderer.getSquares().forEach((square) => square.removeEventListener('click', gameHandler));
+  };
+
+  const gameHandler = (event) => {
+    const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
 
         if (playerOne.getTurn()) {
           event.currentTarget.textContent = playerOne.getMarker();
           Gameboard.setMarker(playerOne.getMarker(), index);
           console.warn(Gameboard.checkRows(playerOne.getMarker()));
           if (checkWin(playerOne.getMarker())) {
-            Renderer.displayResult('Player 1 Won!');
-            Renderer.displayControls();
+            onGameFinished('Player 1 Won!');
+            return;
           } else if (checkDraw()) {
-            Renderer.displayResult('It\'s a Draw!');
-            Renderer.displayControls();
+            onGameFinished("It's a Draw!");
+            return;
           }
           changeTurns();
         } else if (playerTwo.getTurn()) {
           event.currentTarget.textContent = playerTwo.getMarker();
           Gameboard.setMarker(playerTwo.getMarker(), index);
           if (checkWin(playerTwo.getMarker())) {
-            Renderer.displayResult('Player 2 Won!');
-            Renderer.displayControls();
+            onGameFinished('Player 2 Won!');
+            return;
           } else if (checkDraw()) {
-            Renderer.displayResult('It\'s a Draw!');
-            Renderer.displayControls();
+            onGameFinished("It's a Draw!");
+            return;
           }
           changeTurns();
         } else {
           return;
         }
-      });
+  }
+  const gameloop = () => {
+    Renderer.getSquares().forEach((square) => {
+      square.addEventListener('click', gameHandler);
     });
   };
 
