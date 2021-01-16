@@ -183,6 +183,10 @@ main {
   opacity: 0.8;
 }
 
+.opaque:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
 .gameboard div:nth-child(3n + 2) {
   border-right: 1rem solid rgba(255, 255, 255, 0.7);
 }

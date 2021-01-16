@@ -20,7 +20,7 @@ const Renderer = (() => {
 
   const createSquare = (innerContent) => {
     const square = document.createElement('div');
-    square.className = 'square';
+    square.className = 'square opaque';
     square.innerHTML = innerContent;
     return square;
   };
@@ -40,8 +40,8 @@ const Renderer = (() => {
   };
 
   const clearBoard = () => {
-    getSquares().forEach(square => boardContainer.removeChild(square));
-  }
+    getSquares().forEach((square) => boardContainer.removeChild(square));
+  };
 
   const displayControls = () => {
     document.querySelector('.controls').classList.add('controls-visible');
@@ -174,7 +174,6 @@ const Controller = (() => {
   const playerTwo = Player('two', 'O', false);
   const restartButton = document.querySelector('.btn-restart');
 
-
   const changeTurns = () => {
     playerOne.toggleTurn();
     playerTwo.toggleTurn();
@@ -210,8 +209,8 @@ const Controller = (() => {
 
     if (playerOne.getTurn()) {
       event.currentTarget.textContent = playerOne.getMarker();
+      event.currentTarget.classList.remove('opaque');
       Gameboard.setMarker(playerOne.getMarker(), index);
-      console.warn(Gameboard.checkRows(playerOne.getMarker()));
       if (checkWin(playerOne.getMarker())) {
         onGameFinished('Player 1 Won!');
         return;
@@ -222,6 +221,7 @@ const Controller = (() => {
       changeTurns();
     } else if (playerTwo.getTurn()) {
       event.currentTarget.textContent = playerTwo.getMarker();
+      event.currentTarget.classList.remove('opaque');
       Gameboard.setMarker(playerTwo.getMarker(), index);
       if (checkWin(playerTwo.getMarker())) {
         onGameFinished('Player 2 Won!');
