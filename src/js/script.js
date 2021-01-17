@@ -208,6 +208,7 @@ const Controller = (() => {
     const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
 
     if (playerOne.getTurn()) {
+      event.currentTarget.style.color = "rgba(66, 102, 150, 0.8)";
       event.currentTarget.textContent = playerOne.getMarker();
       event.currentTarget.classList.remove('opaque');
       Gameboard.setMarker(playerOne.getMarker(), index);
@@ -220,6 +221,7 @@ const Controller = (() => {
       }
       changeTurns();
     } else if (playerTwo.getTurn()) {
+      event.currentTarget.style.color = "rgba(248, 82, 82, 0.8)";
       event.currentTarget.textContent = playerTwo.getMarker();
       event.currentTarget.classList.remove('opaque');
       Gameboard.setMarker(playerTwo.getMarker(), index);

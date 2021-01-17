@@ -13,6 +13,7 @@ html {
 }
 
 main {
+  position: relative;
   font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column;
@@ -122,7 +123,8 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(2rem);
+  backdrop-filter: blur(1rem);
+  z-index: 3;
 }
 
 .game-result {
@@ -201,4 +203,45 @@ main {
 
 .gameboard div:nth-last-child(-n + 3) {
   border-top: 1rem solid rgba(255, 255, 255, 0.7);
+}
+
+.circle-top-left,
+.circle-bottom-right,
+.circle-top-right,
+.circle-bottom-left {
+  position: absolute;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  background: white;
+  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-holder {
+  border: 1rem solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 15rem;
+  height: 15rem;
+}
+.circle-top-right {
+  top: 20%;
+  left: 70%;
+}
+
+.circle-bottom-left {
+  top: 75%;
+  left: 20%;
+}
+
+.circle-top-left {
+  top: 20%;
+  left: 20%;
+}
+
+.circle-bottom-right {
+  top: 75%;
+  left: 70%;
 }
