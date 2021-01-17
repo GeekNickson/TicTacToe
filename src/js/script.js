@@ -211,6 +211,8 @@ const Controller = (() => {
       event.currentTarget.style.color = "rgba(66, 102, 150, 0.8)";
       event.currentTarget.textContent = playerOne.getMarker();
       event.currentTarget.classList.remove('opaque');
+      event.currentTarget.removeEventListener('click', gameHandler);
+
       Gameboard.setMarker(playerOne.getMarker(), index);
       if (checkWin(playerOne.getMarker())) {
         onGameFinished('Player 1 Won!');
@@ -219,11 +221,14 @@ const Controller = (() => {
         onGameFinished("It's a Draw!");
         return;
       }
+
       changeTurns();
     } else if (playerTwo.getTurn()) {
       event.currentTarget.style.color = "rgba(248, 82, 82, 0.8)";
       event.currentTarget.textContent = playerTwo.getMarker();
       event.currentTarget.classList.remove('opaque');
+      event.currentTarget.removeEventListener('click', gameHandler);
+
       Gameboard.setMarker(playerTwo.getMarker(), index);
       if (checkWin(playerTwo.getMarker())) {
         onGameFinished('Player 2 Won!');
@@ -232,6 +237,7 @@ const Controller = (() => {
         onGameFinished("It's a Draw!");
         return;
       }
+
       changeTurns();
     } else {
       return;
