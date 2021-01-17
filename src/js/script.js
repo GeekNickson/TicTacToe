@@ -1,20 +1,63 @@
 const Renderer = (() => {
   const boardContainer = document.querySelector('.gameboard');
-  const dropdown = document.querySelector('.dropdown');
-  dropdown.firstChild.textContent = 'AI';
 
-  dropdown.addEventListener('mouseover', () => {
-    dropdown.querySelector('.dropdown-content').style.display = 'block';
-  });
+  const dropdowns = document.querySelectorAll('.dropdown');
 
-  dropdown.addEventListener('mouseout', () => {
-    dropdown.querySelector('.dropdown-content').style.display = 'none';
-  });
+  dropdowns[0].firstChild.textContent = 'Human';
+  dropdowns[1].firstChild.textContent = 'Human';
+
+  const playerOneImages = document.querySelectorAll('.player-one-image');
+  const playerTwoImages = document.querySelectorAll('.player-two-image');
+  playerOneImages.forEach((image) => (image.src = './img/human.svg'));
+  playerTwoImages.forEach((image) => (image.src = './img/human-2.svg'));
+
+  const showMainMenu = () => {
+    document.querySelector('.main-menu').classList.add('menu-opened');
+  };
+
+  const hideMainMenu = () => {
+    document.querySelector('.main-menu').classList.remove('menu-opened');
+  };
+
+  const showGame = () => {
+    document.querySelector('.tictactoe').classList.add('game-gamed');
+  };
+
+  const hideGame = () => {
+    document.querySelector('.tictactoe').classList.remove('game-gamed');
+  };
+
+  dropdowns.forEach((dropdown) =>
+    dropdown.addEventListener('mouseover', () => {
+      dropdown.querySelector('.dropdown-content').style.display = 'block';
+    })
+  );
+
+  dropdowns.forEach((dropdown) =>
+    dropdown.addEventListener('mouseout', () => {
+      dropdown.querySelector('.dropdown-content').style.display = 'none';
+    })
+  );
 
   const changePlayerType = () => {
-    dropdown.querySelector('.dropdown-content').addEventListener('click', (event) => {
-      dropdown.firstChild.textContent = '';
-      dropdown.firstChild.textContent = event.target.textContent;
+    dropdowns[0].querySelector('.dropdown-content').addEventListener('click', (event) => {
+      dropdowns[0].firstChild.textContent = '';
+      dropdowns[0].firstChild.textContent = event.target.textContent;
+      if (event.target.textContent === 'AI') {
+        playerOneImages.forEach((image) => (image.src = './img/robot.svg'));
+      } else {
+        playerOneImages.forEach((image) => (image.src = './img/human.svg'));
+      }
+    });
+
+    dropdowns[1].querySelector('.dropdown-content').addEventListener('click', (event) => {
+      dropdowns[1].firstChild.textContent = '';
+      dropdowns[1].firstChild.textContent = event.target.textContent;
+      if (event.target.textContent === 'AI') {
+        playerTwoImages.forEach((image) => (image.src = './img/robot-2.svg'));
+      } else {
+        playerTwoImages.forEach((image) => (image.src = './img/human-2.svg'));
+      }
     });
   };
 
@@ -68,6 +111,10 @@ const Renderer = (() => {
     clearResult,
     changePlayerType,
     clearBoard,
+    showMainMenu,
+    hideMainMenu,
+    showGame,
+    hideGame,
   };
 })();
 
@@ -90,6 +137,10 @@ const Gameboard = (() => {
   const clear = () => {
     board.forEach((square) => (square.marker = ''));
   };
+
+  const reset = () => {
+    board.length = 0;
+  }
 
   const setMarker = (marker, index) => {
     board[index] = { marker };
@@ -152,6 +203,7 @@ const Gameboard = (() => {
     checkDiagonals,
     checkDraw,
     clear,
+    reset,
   };
 })();
 
@@ -172,7 +224,24 @@ const Player = (name, marker, turn) => {
 const Controller = (() => {
   const playerOne = Player('one', 'X', true);
   const playerTwo = Player('two', 'O', false);
+  const playButton = document.querySelector('.btn-play');
+  playButton.addEventListener('click', () => {
+    Renderer.hideMainMenu();
+    Renderer.showGame();
+    init();
+  });
+
   const restartButton = document.querySelector('.btn-restart');
+  const backButton = document.querySelector('.btn-main-menu');
+  backButton.addEventListener('click', () => {
+    Gameboard.clear();
+    Gameboard.reset();
+    Renderer.clearBoard();
+    Renderer.clearResult();
+    Renderer.hideControls();
+    Renderer.hideGame();
+    Renderer.showMainMenu();
+  });
 
   const changeTurns = () => {
     playerOne.toggleTurn();
@@ -208,7 +277,7 @@ const Controller = (() => {
     const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
 
     if (playerOne.getTurn()) {
-      event.currentTarget.style.color = "rgba(66, 102, 150, 0.8)";
+      event.currentTarget.style.color = 'rgba(66, 102, 150, 0.8)';
       event.currentTarget.textContent = playerOne.getMarker();
       event.currentTarget.classList.remove('opaque');
       event.currentTarget.removeEventListener('click', gameHandler);
@@ -224,7 +293,7 @@ const Controller = (() => {
 
       changeTurns();
     } else if (playerTwo.getTurn()) {
-      event.currentTarget.style.color = "rgba(248, 82, 82, 0.8)";
+      event.currentTarget.style.color = 'rgba(248, 82, 82, 0.8)';
       event.currentTarget.textContent = playerTwo.getMarker();
       event.currentTarget.classList.remove('opaque');
       event.currentTarget.removeEventListener('click', gameHandler);
@@ -250,13 +319,13 @@ const Controller = (() => {
   };
 
   const init = () => {
-    Renderer.changePlayerType();
     Gameboard.init();
     Renderer.renderBoard(Gameboard.getBoard());
     gameloop();
   };
 
-  init();
+  Renderer.showMainMenu();
+  Renderer.changePlayerType();
 
   return {
     playerOne,

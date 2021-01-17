@@ -16,15 +16,16 @@
   </head>
   <body>
     <main>
-      <div class="info">
-        <div class="player">
-          <div class="avatar">
-            <img src="./img/human.svg" />
-          </div>
-          <h3 class="name">Name</h3>
+      <section class="main-menu">
+        <div class="header">
+          <h1 class="game-name">Tic-Tac-Toe</h1>
         </div>
-        <div class="player">
-          <div class="line">
+        <div class="players">
+          <div class="player">
+            <h3 class="name">Player one</h3>
+            <div class="avatar">
+              <img class="player-one-image" />
+            </div>
             <div class="dropdown">
               <span></span>
               <div class="dropdown-content">
@@ -32,41 +33,67 @@
                 <p class="option">Human</p>
               </div>
             </div>
+          </div>
+          <button class="btn btn-play"><i class="fas fa-gamepad"></i>Play!</button>
+          <div class="player">
+            <h3 class="name">Player two</h3>
             <div class="avatar">
-              <img src="./img/robot.svg" />
+              <img class="player-two-image" />
+            </div>
+            <div class="dropdown">
+              <span></span>
+              <div class="dropdown-content">
+                <p class="option">AI</p>
+                <p class="option">Human</p>
+              </div>
             </div>
           </div>
-          <h3 id="second-player-name" class="name">Name</h3>
         </div>
-      </div>
-      <div class="gameboard-container">
-        <h2 class="game-result"></h2>
-        <div class="gameboard"></div>
-        <div class="controls">
-          <button class="btn btn-restart"><i class="fas fa-redo"></i> Restart</button>
-          <button class="btn btn-main-menu"><i class="fas fa-times"></i>Stop</button>
+      </section>
+      <section class="tictactoe">
+        <div class="info">
+          <div class="player">
+            <div class="avatar">
+              <img class="player-one-image" />
+            </div>
+            <h3 class="name">Player one</h3>
+          </div>
+          <div class="player">
+            <div class="avatar">
+              <img class="player-two-image" />
+            </div>
+            <h3 id="second-player-name" class="name">Player two</h3>
+          </div>
         </div>
-      </div>
-      <div class="circle-top-right">
-        <div class="image-holder">
-          <img src="./img/forest.svg" />
+        <div class="gameboard-container">
+          <h2 class="game-result"></h2>
+          <div class="gameboard"></div>
+          <div class="controls">
+            <button class="btn btn-restart"><i class="fas fa-redo"></i> Restart</button>
+            <button class="btn btn-main-menu"><i class="fas fa-arrow-left"></i>Back</button>
+          </div>
         </div>
-      </div>
-      <div class="circle-bottom-left">
-        <div class="image-holder">
-          <img src="./img/hills.svg" />
+        <div class="circle-top-right">
+          <div class="image-holder">
+            <img src="./img/forest.svg" />
+          </div>
         </div>
-      </div>
-      <div class="circle-top-left">
-        <div class="image-holder">
-          <img src="./img/river.svg" />
+        <div class="circle-bottom-left">
+          <div class="image-holder">
+            <img src="./img/hills.svg" />
+          </div>
         </div>
-      </div>
-      <div class="circle-bottom-right">
-        <div class="image-holder">
-          <img src="./img/mountains.svg" />
+        <div class="circle-top-left">
+          <div class="image-holder">
+            <img src="./img/river.svg" />
+          </div>
         </div>
-      </div>
+        <div class="circle-bottom-right">
+          <div class="image-holder">
+            <img src="./img/mountains.svg" />
+          </div>
+        </div>
+      </section>
     </main>
     <script src="js/script.js"></script>
   </body>
