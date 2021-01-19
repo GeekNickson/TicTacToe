@@ -131,7 +131,7 @@ html {
 }
 
 .info {
-  width: 80%;
+  width: 50%;
   min-height: 20vh;
   display: flex;
   align-items: center;
@@ -266,45 +266,4 @@ html {
 
 .gameboard div:nth-last-child(-n + 3) {
   border-top: 1rem solid rgba(255, 255, 255, 0.7);
-}
-
-.circle-top-left,
-.circle-bottom-right,
-.circle-top-right,
-.circle-bottom-left {
-  position: absolute;
-  width: 15rem;
-  height: 15rem;
-  border-radius: 50%;
-  background: white;
-  background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-holder {
-  border: 1rem solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  width: 10rem;
-  height: 10rem;
-}
-.circle-top-right {
-  top: 20%;
-  left: 72%;
-}
-
-.circle-bottom-left {
-  top: 80%;
-  left: 20%;
-}
-
-.circle-top-left {
-  top: 20%;
-  left: 20%;
-}
-
-.circle-bottom-right {
-  top: 80%;
-  left: 72%;
 }
