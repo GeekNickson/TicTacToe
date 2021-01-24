@@ -408,6 +408,49 @@ const Controller = (() => {
     }
   };
 
+  const aiTurn = () => {
+    const index = Gameboard.bestMove();
+    const selectedSquare = Renderer.renderTurn(index, playerTwo.getMarker(), playerTwo.getColor());
+    Gameboard.setMarker(playerTwo.getMarker(), index);
+    changeTurns();
+    gameplay();
+  };
+
+  const handleHumanTurn = (event) => {
+    const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
+    const selectedSquare = Renderer.renderTurn(index, playerOne.getMarker(), playerOne.getColor());
+    Gameboard.setMarker(playerOne.getMarker(), index);
+    changeTurns();
+    gameplay();
+  };
+
+  const humanTurn = () => {
+    Renderer.getSquares().forEach((square) => square.addEventListener('click', handleHumanTurn));
+  };
+
+  const gameplay = () => {
+    let player = playerOne.getTurn() ? playerOne : playerTwo;
+    if (player.getType() === 'Human') {
+      humanTurn();
+      if (checkWin(player.getMarker())) {
+        onGameFinished(`${player.getName()} Won!`);
+        return;
+      } else if (checkDraw()) {
+        onGameFinished("It's a Draw!");
+        return;
+      }
+    } else {
+      setTimeout(() => aiTurn(), 500);
+      if (checkWin(player.getMarker())) {
+        onGameFinished(`${player.getName()} Won!`);
+        return;
+      } else if (checkDraw()) {
+        onGameFinished("It's a Draw!");
+        return;
+      }
+    }
+  };
+
   const gameloop = () => {
     if (playerOne.getType() === 'Human' && playerTwo.getType() === 'Human') {
       Renderer.getSquares().forEach((square) => {
@@ -417,7 +460,7 @@ const Controller = (() => {
       (playerOne.getType() === 'AI' && playerTwo.getType() === 'Human') ||
       (playerOne.getType() === 'Human' && playerTwo.getType() === 'AI')
     ) {
-      //to do
+      gameplay();
     }
   };
 
