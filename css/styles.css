@@ -293,7 +293,7 @@ html {
   }
 }
 
-@media screen and (max-width: 412px) {
+@media screen and (max-width: 450px) {
   .game-name {
     font-size: 5rem;
     margin: 0 auto;
