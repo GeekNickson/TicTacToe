@@ -345,3 +345,41 @@ html {
     font-size: 1.5rem;
   }
 }
+
+@media (max-width: 350px) {
+  .info {
+    width: 100%;
+  }
+
+  .player {
+    text-align: center;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .gameboard-container {
+    width: 95%;
+    min-height: 60vh;
+    margin-bottom: 2rem;
+  }
+
+  .gameboard {
+    width: 40vh;
+    height: 40vh;
+  }
+
+  .square {
+    font-size: 3rem;
+  }
+
+  .game-result {
+    font-size: 2rem;
+  }
+
+  .controls > button {
+    margin: 0 0.5rem;
+    font-size: 1.2rem;
+  }
+}
