@@ -267,3 +267,81 @@ html {
 .gameboard div:nth-last-child(-n + 3) {
   border-top: 1rem solid rgba(255, 255, 255, 0.7);
 }
+
+@media screen and (max-width: 1024px) {
+  .players {
+    width: 80%;
+  }
+  .placeholder {
+    min-height: 30vh;
+  }
+  .gameboard-container {
+    width: 70%;
+    min-height: 60vh;
+  }
+  .info {
+    width: 70%;
+  }
+  .controls {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .controls {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  .game-name {
+    font-size: 5rem;
+    margin: 0 auto;
+  }
+
+  .players {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .placeholder {
+    min-height: 10vh;
+    justify-content: center;
+    align-items: center;
+    order: 5;
+  }
+
+  .placeholder > .logo {
+    display: none;
+    width: 0rem;
+    height: 0rem;
+  }
+
+  .info {
+    width: 90%;
+  }
+
+  .gameboard-container {
+    width: 90%;
+  }
+
+  .gameboard {
+    width: 30vh;
+    height: 30vh;
+  }
+
+  .game-result {
+    font-size: 3rem;
+  }
+
+  .controls {
+    width: 100%;
+  }
+
+  .controls > button {
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+  }
+}
