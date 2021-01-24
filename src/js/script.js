@@ -301,6 +301,16 @@ const Gameboard = (() => {
   };
 })();
 
+const Timestuff = (() => {
+  const delay = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  return {
+    delay,
+  };
+})();
+
 const Player = (name, marker, turn, type, color) => {
   const getName = () => name;
   const getMarker = () => marker;
@@ -428,7 +438,7 @@ const Controller = (() => {
     Renderer.getSquares().forEach((square) => square.addEventListener('click', handleHumanTurn));
   };
 
-  const gameplay = () => {
+  const gameplay = async () => {
     let player = playerOne.getTurn() ? playerOne : playerTwo;
     if (player.getType() === 'Human') {
       humanTurn();
@@ -440,7 +450,8 @@ const Controller = (() => {
         return;
       }
     } else {
-      setTimeout(() => aiTurn(), 500);
+      await Timestuff.delay(500);
+      aiTurn();
       if (checkWin(player.getMarker())) {
         onGameFinished(`${player.getName()} Won!`);
         return;
