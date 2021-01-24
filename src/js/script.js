@@ -114,7 +114,7 @@ const Renderer = (() => {
     return dropdowns[1].firstChild.textContent;
   };
 
-  const renderAiTurn = (index, marker, color) => {
+  const renderTurn = (index, marker, color) => {
     selectedSquare = getSquare(index);
     selectedSquare.textContent = marker;
     selectedSquare.style.color = color;
@@ -135,7 +135,7 @@ const Renderer = (() => {
     hideMainMenu,
     showGame,
     hideGame,
-    renderAiTurn,
+    renderTurn,
     getPlayerOneType,
     getPlayerTwoType,
   };
@@ -376,10 +376,8 @@ const Controller = (() => {
   const gameHandlerTwoHumans = (event) => {
     const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
     if (playerOne.getTurn()) {
-      event.currentTarget.style.color = playerOne.getColor();
-      event.currentTarget.textContent = playerOne.getMarker();
-      event.currentTarget.classList.remove('opaque');
-      event.currentTarget.removeEventListener('click', gameHandlerTwoHumans);
+      const selectedSquare = Renderer.renderTurn(index, playerOne.getMarker(), playerOne.getColor());
+      selectedSquare.removeEventListener('click', gameHandlerTwoHumans);
 
       Gameboard.setMarker(playerOne.getMarker(), index);
       if (checkWin(playerOne.getMarker())) {
@@ -389,12 +387,11 @@ const Controller = (() => {
         onGameFinished("It's a Draw!");
         return;
       }
+
       changeTurns();
     } else if (playerTwo.getTurn()) {
-      event.currentTarget.style.color = playerTwo.getColor();
-      event.currentTarget.textContent = playerTwo.getMarker();
-      event.currentTarget.classList.remove('opaque');
-      event.currentTarget.removeEventListener('click', gameHandlerTwoHumans);
+      const selectedSquare = Renderer.renderTurn(index, playerTwo.getMarker(), playerTwo.getColor());
+      selectedSquare.removeEventListener('click', gameHandlerTwoHumans);
 
       Gameboard.setMarker(playerTwo.getMarker(), index);
       if (checkWin(playerTwo.getMarker())) {
