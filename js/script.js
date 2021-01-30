@@ -422,6 +422,13 @@ const Controller = (() => {
     const index = Gameboard.bestMove();
     const selectedSquare = Renderer.renderTurn(index, playerTwo.getMarker(), playerTwo.getColor());
     Gameboard.setMarker(playerTwo.getMarker(), index);
+    if (checkWin(playerTwo.getMarker())) {
+      onGameFinished(`${playerTwo.getName()} Won!`);
+      return;
+    } else if (checkDraw()) {
+      onGameFinished("It's a Draw!");
+      return;
+    }
     changeTurns();
     gameplay();
   };
@@ -430,6 +437,13 @@ const Controller = (() => {
     const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
     const selectedSquare = Renderer.renderTurn(index, playerOne.getMarker(), playerOne.getColor());
     Gameboard.setMarker(playerOne.getMarker(), index);
+    if (checkWin(playerOne.getMarker())) {
+      onGameFinished(`${playerOne.getName()} Won!`);
+      return;
+    } else if (checkDraw()) {
+      onGameFinished("It's a Draw!");
+      return;
+    }
     changeTurns();
     gameplay();
   };
@@ -442,23 +456,9 @@ const Controller = (() => {
     let player = playerOne.getTurn() ? playerOne : playerTwo;
     if (player.getType() === 'Human') {
       humanTurn();
-      if (checkWin(player.getMarker())) {
-        onGameFinished(`${player.getName()} Won!`);
-        return;
-      } else if (checkDraw()) {
-        onGameFinished("It's a Draw!");
-        return;
-      }
     } else {
       await Timestuff.delay(500);
       aiTurn();
-      if (checkWin(player.getMarker())) {
-        onGameFinished(`${player.getName()} Won!`);
-        return;
-      } else if (checkDraw()) {
-        onGameFinished("It's a Draw!");
-        return;
-      }
     }
   };
 
